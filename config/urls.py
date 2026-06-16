@@ -16,7 +16,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.urls import include
+from devboard import urls as dev_urls
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('devboard/', include(dev_urls))
 ]

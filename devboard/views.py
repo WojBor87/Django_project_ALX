@@ -1,11 +1,20 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 
+from .models import Comment
+
 # Create your views here.
 def index(request):
-    name = request.GET.get('name', 'Guest')
-    number = request.GET.get('number', 1)
-    return render(request, 'index.html', {'name': name, 'number': number})
+    name = request.GET.get('name', '1')
+    if name != '1':
+        comments = Comment.objects.filter()
+    else:
+        comments = None
+    return render(
+        request,
+        'index.html',
+        {'name': name, 'comments': comments}
+    )
 
 def http(request):
     return HttpResponse(

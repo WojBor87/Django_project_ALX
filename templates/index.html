@@ -1,5 +1,12 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h2>{{ number }}. Welcome {{ name }}</h2>
+    <h2>Welcome {{ name }}</h2>
+    {% for comment in comments %}
+        <ul>
+            <li>{{ comment }}</li>
+        </ul>
+    {% empty %}
+        <p>Nie ma komentarzy</p>
+    {% endfor %}
 {% endblock %}

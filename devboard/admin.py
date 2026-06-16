@@ -1,12 +1,21 @@
 from django.contrib import admin
 from .models import Project, Task, Comment
 
+
+class TaskInline(admin.TabularInline):
+    model = Task
+    fields = ("title", "status", "priority", "assignee", "due_date")
+    extra = 1
+    show_change_link = True
+
 @admin.register(Project)
 class ProjectAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'owner', 'created_at')
     search_fields = ('name', 'description')
     list_filter = ('name',)
     ordering = ('-created_at', 'owner')
+
+    inlines = [TaskInline]
 
 @admin.register(Task)
 class TaskAdmin(admin.ModelAdmin):

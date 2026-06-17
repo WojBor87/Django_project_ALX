@@ -1,27 +1,19 @@
-from django.http import HttpResponse
-from django.shortcuts import render
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Count
+from django.views.generic import ListView
 
-from .models import Comment
+from devboard.models import Project
 
-# Create your views here.
-def index(request):
-    name = request.GET.get('name', '1')
-    if name != '1':
-        comments = Comment.objects.filter()
-    else:
-        comments = None
-    return render(
-        request,
-        'index.html',
-        {'name': name, 'comments': comments}
-    )
 
-def http(request):
-    return HttpResponse(
-        """
-        <h1>DevBoard</h1>
-            <ul> 
-                <li><h2>etap 1: scaffold!</h2></li>
-            </ul>
-        """
-    )
+class ProjectListView(ListView,LoginRequiredMixin):
+    model = Project
+    template_name = 'devboard/project_list.html'
+    context_object_name = 'projects'
+
+    def get_queryset(self):
+        return (
+            Project.objects.filter(owner=self.request.user)
+            .annotate(task_count=Count('tasks'))
+            .order_by('-task_count')
+        )
+

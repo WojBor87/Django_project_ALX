@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
 
+
 class Project(models.Model):
     name = models.CharField(max_length=200, verbose_name="Nazwa")
     description = models.TextField(blank=True, verbose_name="Opis")
@@ -24,6 +25,7 @@ class Project(models.Model):
 
     def task_count(self) -> int:
         return self.tasks.count()
+
 
 class Task(models.Model):
     """Zadanie przypisane do projektu."""

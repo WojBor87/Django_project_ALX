@@ -21,5 +21,6 @@ from devboard import urls as dev_urls
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('devboard/', include(dev_urls))
+    path('', include(dev_urls, namespace='devboard')),
+    path('accounts/', include('django.contrib.auth.urls')),
 ]

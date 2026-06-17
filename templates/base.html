@@ -37,10 +37,26 @@
         <div class="app-shell d-flex flex-column">
             <nav class="navbar navbar-expand-lg navbar-dark bg-primary app-navbar sticky-top">
                 <div class="container py-1">
-                    <a class="navbar-brand fw-semibold d-flex align-items-center gap-2" href="/">
+                    <a class="navbar-brand fw-semibold d-flex align-items-center gap-2" href="/static">
                         <span class="badge rounded-pill text-bg-light text-primary">DB</span>
                         DevBoard
                     </a>
+                    <div class="ms-auto d-flex align-items-center gap-2 flex-wrap justify-content-end">
+                        {% if user.is_authenticated %}
+                            <span class="badge rounded-pill text-bg-light text-primary px-3 py-2">
+                                Zalogowany: {{ user.username }}
+                            </span>
+                            <form action="{% url 'logout' %}" method="post">
+                                {% csrf_token %}
+                                <button class="btn btn-light" type="submit">Wyloguj</button>
+                            </form>
+                        {% else %}
+                            <span class="badge rounded-pill text-bg-info text-white px-3 py-2">Gość</span>
+                            <form action="{% url 'login' %}" method="get">
+                                <button class="btn btn-light" type="submit">Zaloguj</button>
+                            </form>
+                        {% endif %}
+                    </div>
                 </div>
             </nav>
 

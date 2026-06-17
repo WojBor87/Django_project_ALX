@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block title %}Lista Projektów{% endblock %}
+
+{% block content %}
+<div class="mb-4">
+    <h1 class="h3 fw-semibold text-primary mb-2">{{ project.name }}</h1>
+</div>
+
+
+{% endblock %}
+
+{% block footer %}<p align="center">{% now "Y" %} © DevBoard</p>{% endblock %}

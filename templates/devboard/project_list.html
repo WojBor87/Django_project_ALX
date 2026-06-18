@@ -10,16 +10,28 @@
 {% if projects %}
 <div class="row g-3">
     {% for p in projects %}
-    <div class="col-12 col-md-6 col-lg-4">
-        <div class="card h-100 border-0 shadow-sm">
-            <div class="card-body">
-                <h5 class="card-title text-primary">
-                    <a href="{% url 'devboard:project-details' p.pk %}">{{ p.name|upper }}</a>
-                </h5>
-                <p class="card-text text-muted">{{ p.description|truncatewords:20|linebreaks }}</p>
-                <p class="card-text text-muted">{{ p.created_at|date:"d.m.Y" }}</p>
-                <hr>
-                <p class="card-text text-muted">{{ p.task_count }} zadań</p>
+    <div class="card h-100 border-0 shadow-sm">
+        <div class="card-body d-flex flex-column">
+
+            <h5 class="card-title">
+                <a href="{% url 'devboard:project-details' p.pk %}"
+                   class="text-decoration-none text-primary">
+                    {{ p.name }}
+                </a>
+            </h5>
+
+            <p class="card-text text-muted">
+                {{ p.description|truncatewords:20 }}
+            </p>
+
+            <div class="mt-auto pt-3">
+                <small class="text-muted d-block mb-2">
+                    {{ p.created_at|date:"d.m.Y" }}
+                </small>
+
+                <span class="badge bg-primary-subtle text-primary">
+                    {{ p.task_count }} zadań
+                </span>
             </div>
         </div>
     </div>
@@ -31,5 +43,3 @@
 </div>
 {% endif %}
 {% endblock %}
-
-{% block footer %}<p align="center">{% now "Y" %} © DevBoard</p>{% endblock %}

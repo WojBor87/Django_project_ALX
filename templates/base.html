@@ -1,80 +1,140 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="pl">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        <title>DevBoard - {% block title %}{% endblock %}</title>
-        <style>
-            body {
-                min-height: 100vh;
-                background:
-                    radial-gradient(circle at top, rgba(13, 110, 253, 0.16), transparent 30%),
-                    linear-gradient(180deg, #f7fbff 0%, #eef5ff 45%, #e8f1ff 100%);
-            }
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
-            .app-shell {
-                min-height: 100vh;
-            }
+    <!-- Inter Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-            .app-navbar {
-                box-shadow: 0 0.5rem 1.5rem rgba(13, 110, 253, 0.18);
-            }
+    <title>DevBoard - {% block title %}{% endblock %}</title>
 
+    <style>
+        body {
+            min-height: 100vh;
+            font-family: 'Inter', sans-serif;
+            background:
+                radial-gradient(circle at top, rgba(13, 110, 253, 0.16), transparent 30%),
+                linear-gradient(180deg, #f7fbff 0%, #eef5ff 45%, #e8f1ff 100%);
+        }
+
+        .app-shell {
+            min-height: 100vh;
+        }
+
+        .app-navbar {
+            backdrop-filter: blur(12px);
+            box-shadow: 0 0.5rem 1.5rem rgba(13, 110, 253, 0.18);
+        }
+
+        .app-content {
+            border: 0;
+            border-radius: 1.25rem;
+            box-shadow: 0 1rem 2.5rem rgba(13, 110, 253, 0.08);
+        }
+
+        .app-footer {
+            color: #5b7ea6;
+        }
+
+        .navbar-brand {
+            transition: opacity 0.2s ease;
+        }
+
+        .navbar-brand:hover {
+            opacity: 0.85;
+        }
+
+        .card {
+            transition:
+                transform 0.2s ease,
+                box-shadow 0.2s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.08) !important;
+        }
+
+        @media (max-width: 576px) {
             .app-content {
-                border: 0;
-                border-radius: 1.25rem;
-                box-shadow: 0 1rem 2.5rem rgba(13, 110, 253, 0.08);
+                border-radius: 0.75rem;
+                padding: 1.25rem !important;
             }
+        }
+    </style>
+    {% block extrascripts %}{% endblock %}
+</head>
 
-            .app-footer {
-                color: #5b7ea6;
-            }
-        </style>
-    </head>
-    <body>
-        <div class="app-shell d-flex flex-column">
-            <nav class="navbar navbar-expand-lg navbar-dark bg-primary app-navbar sticky-top">
-                <div class="container py-1">
-                    <a class="navbar-brand fw-semibold d-flex align-items-center gap-2" href="/static">
-                        <span class="badge rounded-pill text-bg-light text-primary">DB</span>
-                        DevBoard
-                    </a>
-                    <div class="ms-auto d-flex align-items-center gap-2 flex-wrap justify-content-end">
-                        {% if user.is_authenticated %}
-                            <span class="badge rounded-pill text-bg-light text-primary px-3 py-2">
-                                Zalogowany: {{ user.username }}
-                            </span>
-                            <form action="{% url 'logout' %}" method="post">
-                                {% csrf_token %}
-                                <button class="btn btn-light" type="submit">Wyloguj</button>
-                            </form>
-                        {% else %}
-                            <span class="badge rounded-pill text-bg-info text-white px-3 py-2">Gość</span>
-                            <form action="{% url 'login' %}" method="get">
-                                <button class="btn btn-light" type="submit">Zaloguj</button>
-                            </form>
-                        {% endif %}
-                    </div>
-                </div>
-            </nav>
+<body>
+<div class="app-shell d-flex flex-column">
 
-            <main class="flex-grow-1 py-4 py-lg-5">
-                <div class="container">
-                    <div class="app-content bg-white p-4 p-lg-5">
-                        {% block content %}{% endblock %}
-                    </div>
-                </div>
-            </main>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary app-navbar sticky-top">
+        <div class="container py-2">
 
-            <footer class="py-4 app-footer">
-                <div class="container">
-                    {% block footer %}{% endblock %}
-                </div>
-            </footer>
+            <a class="navbar-brand fw-bold d-flex align-items-center gap-2" href="/">
+                <span class="badge rounded-pill bg-white text-primary px-3 py-2">
+                    DB
+                </span>
+                DevBoard
+            </a>
+
+            <div class="ms-auto d-flex align-items-center gap-2 flex-wrap justify-content-end">
+                {% if user.is_authenticated %}
+                    <span class="badge rounded-pill bg-light text-primary px-3 py-2">
+                        👤 {{ user.username }}
+                    </span>
+
+                    <form action="{% url 'logout' %}" method="post" class="m-0">
+                        {% csrf_token %}
+                        <button class="btn btn-light btn-sm px-3" type="submit">
+                            Wyloguj
+                        </button>
+                    </form>
+                {% else %}
+                    <span class="badge rounded-pill bg-info text-white px-3 py-2">
+                        Gość
+                    </span>
+
+                    <form action="{% url 'login' %}" method="get" class="m-0">
+                        <button class="btn btn-light btn-sm px-3" type="submit">
+                            Zaloguj
+                        </button>
+                    </form>
+                {% endif %}
+            </div>
         </div>
+    </nav>
 
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    </body>
+    <!-- Main -->
+    <main class="flex-grow-1 py-4 py-lg-5">
+        <div class="container">
+            <div class="app-content bg-white p-4 p-lg-5">
+                {% block content %}{% endblock %}
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="py-4 app-footer">
+        <div class="container">
+            {% block footer %}
+                <p class="text-center mb-0">
+                    © {% now "Y" %} DevBoard • Built with Django + Bootstrap
+                </p>
+            {% endblock %}
+        </div>
+    </footer>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
 </html>

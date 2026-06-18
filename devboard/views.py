@@ -40,6 +40,9 @@ class ProjectDataView(LoginRequiredMixin, DetailView):
 
 
 class TaskCreateView(LoginRequiredMixin, CreateView):
+    '''
+    Mój widok
+    '''
     model = Task
     template_name = 'devboard/task_create.html'
     form_class = TaskForm

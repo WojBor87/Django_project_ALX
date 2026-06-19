@@ -1,0 +1,60 @@
+digraph DevboardClassDiagram {
+    graph [rankdir=LR, splines=ortho, nodesep=0.9, ranksep=1.0, bgcolor="white", fontname="Segoe UI"];
+    node [shape=plain, fontname="Segoe UI"];
+    edge [color="#111827", fontname="Segoe UI", fontsize=10, arrowsize=0.8, penwidth=1.5];
+
+    User [label=<
+        <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" COLOR="#111827">
+            <TR><TD BGCOLOR="#eef2ff"><B>User</B></TD></TR>
+            <TR><TD ALIGN="LEFT">- id: int</TD></TR>
+            <TR><TD ALIGN="LEFT">- username: str</TD></TR>
+            <TR><TD ALIGN="LEFT">- email: str</TD></TR>
+        </TABLE>
+    >];
+
+    Project [label=<
+        <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" COLOR="#111827">
+            <TR><TD BGCOLOR="#eef2ff"><B>Project</B></TD></TR>
+            <TR><TD ALIGN="LEFT">- name: str</TD></TR>
+            <TR><TD ALIGN="LEFT">- description: text</TD></TR>
+            <TR><TD ALIGN="LEFT">- owner: User</TD></TR>
+            <TR><TD ALIGN="LEFT">- created_at: datetime</TD></TR>
+            <TR><TD ALIGN="LEFT">- updated_at: datetime</TD></TR>
+            <TR><TD ALIGN="LEFT">+ task_count(): int</TD></TR>
+        </TABLE>
+    >];
+
+    Task [label=<
+        <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" COLOR="#111827">
+            <TR><TD BGCOLOR="#eef2ff"><B>Task</B></TD></TR>
+            <TR><TD ALIGN="LEFT">- title: str</TD></TR>
+            <TR><TD ALIGN="LEFT">- description: text</TD></TR>
+            <TR><TD ALIGN="LEFT">- project: Project</TD></TR>
+            <TR><TD ALIGN="LEFT">- assignee: User [0..1]</TD></TR>
+            <TR><TD ALIGN="LEFT">- status: Status</TD></TR>
+            <TR><TD ALIGN="LEFT">- priority: Priority</TD></TR>
+            <TR><TD ALIGN="LEFT">- due_date: date [0..1]</TD></TR>
+            <TR><TD ALIGN="LEFT">- created_at: datetime</TD></TR>
+            <TR><TD ALIGN="LEFT">- updated_at: datetime</TD></TR>
+            <TR><TD ALIGN="LEFT">+ is_overdue(): bool</TD></TR>
+        </TABLE>
+    >];
+
+    Comment [label=<
+        <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" COLOR="#111827">
+            <TR><TD BGCOLOR="#eef2ff"><B>Comment</B></TD></TR>
+            <TR><TD ALIGN="LEFT">- task: Task</TD></TR>
+            <TR><TD ALIGN="LEFT">- author: User</TD></TR>
+            <TR><TD ALIGN="LEFT">- body: text</TD></TR>
+            <TR><TD ALIGN="LEFT">- created_at: datetime</TD></TR>
+            <TR><TD ALIGN="LEFT">- updated_at: datetime</TD></TR>
+        </TABLE>
+    >];
+
+    User -> Project [dir=both, arrowhead=none, arrowtail=none, taillabel="1", headlabel="0..*", label="owns"];
+    Project -> Task [dir=both, arrowhead=none, arrowtail=diamond, taillabel="1", headlabel="0..*", label="contains"];
+    Task -> Comment [dir=both, arrowhead=none, arrowtail=diamond, taillabel="1", headlabel="0..*", label="has"];
+    User -> Task [style=dashed, dir=both, arrowhead=none, arrowtail=none, taillabel="0..*", headlabel="0..1", label="assigned to"];
+    User -> Comment [style=dashed, dir=both, arrowhead=none, arrowtail=none, taillabel="0..*", headlabel="1", label="authors"];
+}
+

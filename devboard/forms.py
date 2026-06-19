@@ -1,6 +1,6 @@
 from django import forms
 
-from devboard.models import Task
+from devboard.models import Comment, Task
 
 
 class TaskForm(forms.ModelForm):
@@ -24,3 +24,14 @@ class TaskForm(forms.ModelForm):
         if priority == Task.Priority.HIGH and not due_date:
             raise forms.ValidationError("Zadanie o wysokim priorytecie musi mieć określony termin wykonania.")
         return cleaned
+
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ["task", "body"]
+        widgets = {
+            "task": forms.Select(attrs={"class": "form-select"}),
+            "body": forms.Textarea(attrs={"class": "form-control", "rows": "4"}),
+        }
+

@@ -1,11 +1,11 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 from django.db.models import Count
-from django.urls import reverse_lazy
+from django.urls import reverse, reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView
 
-from devboard.models import Project, Task
-from devboard.forms import TaskForm
+from devboard.models import Project, Task, Comment
+from devboard.forms import TaskForm, CommentForm
 
 
 class ProjectListView(LoginRequiredMixin, ListView):
@@ -57,4 +57,27 @@ class TaskCreateView(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         messages.success(self.request, f"Zadanie '{form.instance.title}' zostalo dodane")
         return super().form_valid(form)
+
+
+class CommentsView(LoginRequiredMixin, ListView):
+    pass
+
+
+class AddNewCommentToTask(LoginRequiredMixin, CreateView):
+    model = Comment
+    template_name = 'devboard/comment_add.html'
+    form_class = CommentForm
+    context_object_name = 'comment'
+
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+        form.fields["task"].queryset = Task.objects.filter(project__owner=self.request.user)
+        return form
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse("devboard:project_details", kwargs={"pk": self.object.task.project_id})
 

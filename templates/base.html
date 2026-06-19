@@ -1,4 +1,4 @@
-{% load static %}
+{% load static i18n %}
 <!DOCTYPE html>
 <html lang="pl">
 <head>
@@ -87,6 +87,25 @@
             </a>
 
             <div class="ms-auto d-flex align-items-center gap-2 flex-wrap justify-content-end">
+                <form action="{% url 'set_language' %}" method="post" class="m-0">
+                    {% csrf_token %}
+                    <input name="next" type="hidden" value="{{ request.path }}">
+                    <select name="language"
+                            class="form-select form-select-sm bg-light border-0 shadow-sm rounded-pill text-primary fw-semibold"
+                            style="min-width: 160px;"
+                            onchange="this.form.submit()"
+                            aria-label="Language selector">
+                        {% get_current_language as LANGUAGE_CODE %}
+                        {% get_available_languages as LANGUAGES %}
+                        {% for lang_code, lang_name in LANGUAGES %}
+                            <option value="{{ lang_code }}"
+                                {% if lang_code == LANGUAGE_CODE %}selected{% endif %}>
+                                {% if lang_code == 'pl' %}🇵🇱 {% elif lang_code == 'en' %}🇬🇧 {% elif lang_code == 'it' %}🇮🇹 {% elif lang_code == 'ko' %}🇰🇷 {% endif %}{{ lang_name }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </form>
+
                 {% if user.is_authenticated %}
                     <span class="badge rounded-pill bg-light text-primary px-3 py-2">
                         👤 {{ user.username }}

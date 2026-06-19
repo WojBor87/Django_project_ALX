@@ -3,6 +3,7 @@ from django.contrib import messages
 from django.db.models import Count
 from django.urls import reverse, reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView
+from django.utils.translation import gettext_lazy as _
 
 from devboard.models import Project, Task, Comment
 from devboard.forms import TaskForm, CommentForm
@@ -55,7 +56,7 @@ class TaskCreateView(LoginRequiredMixin, CreateView):
         return form
 
     def form_valid(self, form):
-        messages.success(self.request, f"Zadanie '{form.instance.title}' zostalo dodane")
+        messages.success(self.request, _(f"Zadanie '{form.instance.title}' zostalo dodane"))
         return super().form_valid(form)
 
 

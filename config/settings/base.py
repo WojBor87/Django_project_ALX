@@ -25,6 +25,22 @@ DEBUG = False
 
 ALLOWED_HOSTS = []
 
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        # "rest_framework_simplejwt.authentication.JWTAuthentication",
+        "rest_framework.authentication.SessionAuthentication",
+    ],
+    "DEFAULT_PERMISSION_CLASSES": [
+        "rest_framework.permissions.IsAuthenticated",
+    ],
+    # "DEFAULT_FILTER_BACKENDS": [],
+    # "DEFAULT_THROTTLE_CLASSES": [],
+    # "DEFAULT_THROTTLE_RATES": [],
+    # "DEFAULT_RENDERER_CLASSES": [],
+    "DEFAULT_PAGINATION_CLASSES": "rest_framework.pagination.PageNumberPagination",
+    "PAGE_SIZE": 10,
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema"
+}
 
 # Application definition
 
@@ -36,6 +52,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'devboard',
+    "rest_framework",
+    "drf_spectacular",
 ]
 
 MIDDLEWARE = [

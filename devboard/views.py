@@ -59,8 +59,22 @@ class TaskCreateView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
 
-class CommentsView(LoginRequiredMixin, ListView):
-    pass
+class TaskDetailView(LoginRequiredMixin, DetailView):
+    model = Task
+    template_name = 'devboard/task_detail.html'
+    context_object_name = 'task'
+
+    def get_queryset(self):
+        return Task.objects.filter(owner=self.request.user)
+
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        ctx['comments'] = (
+            self.object.comments
+            .select_related('task')
+            .order_by('-created_at', 'author')
+        )
+        return ctx
 
 
 class AddNewCommentToTask(LoginRequiredMixin, CreateView):

@@ -34,10 +34,10 @@ REST_FRAMEWORK = {
         "rest_framework.permissions.IsAuthenticated",
     ],
     # "DEFAULT_FILTER_BACKENDS": [],
-    # "DEFAULT_THROTTLE_CLASSES": [],
+    # "DEFAULT_THROTTLE_CLASS": [],
     # "DEFAULT_THROTTLE_RATES": [],
-    # "DEFAULT_RENDERER_CLASSES": [],
-    "DEFAULT_PAGINATION_CLASSES": "rest_framework.pagination.PageNumberPagination",
+    # "DEFAULT_RENDERER_CLASS": [],
+    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
     "PAGE_SIZE": 10,
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema"
 }

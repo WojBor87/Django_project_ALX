@@ -20,10 +20,18 @@ from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView, Sp
 from rest_framework import routers
 
 from devboard import urls as dev_urls
-from devboard.api_views import CommentViewSet
+from devboard.api_views import (
+    CommentViewSet, AllTaskViewSet, MyTaskViewSet,
+    ProjectViewSet, ProjectWithTasksSet, ProjectWithEverythingSet
+)
 
 router = routers.DefaultRouter()
 router.register("comments", CommentViewSet, basename="comment")
+router.register("all_tasks", AllTaskViewSet, basename="all_task")
+router.register("my_tasks", MyTaskViewSet, basename="my_task")
+router.register("project", ProjectViewSet, basename="project")
+router.register("project_tasks", ProjectWithTasksSet, basename="project_tasks")
+router.register("project_tasks_comments", ProjectWithEverythingSet, basename="project_tasks_comments")
 
 urlpatterns = [
     path('admin/', admin.site.urls),

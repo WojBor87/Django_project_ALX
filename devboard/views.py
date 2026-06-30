@@ -66,7 +66,7 @@ class TaskDetailView(LoginRequiredMixin, DetailView):
     context_object_name = 'task'
 
     def get_queryset(self):
-        return Task.objects.filter(owner=self.request.user)
+        return Task.objects.filter(assignee=self.request.user)
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
@@ -84,9 +84,17 @@ class AddNewCommentToTask(LoginRequiredMixin, CreateView):
     form_class = CommentForm
     context_object_name = 'comment'
 
+    def get_task(self):
+        return Task.objects.filter(project__owner=self.request.user).get(pk=self.kwargs["pk"])
+
+    def get_queryset(self):
+        return Task.objects.filter(project__owner=self.request.user)
+
     def get_form(self, form_class=None):
         form = super().get_form(form_class)
-        form.fields["task"].queryset = Task.objects.filter(project__owner=self.request.user)
+        form.fields["task"].queryset = self.get_queryset()
+        task = self.get_task()
+        form.initial["task"] = task
         return form
 
     def form_valid(self, form):
@@ -96,3 +104,7 @@ class AddNewCommentToTask(LoginRequiredMixin, CreateView):
     def get_success_url(self):
         return reverse("devboard:project_details", kwargs={"pk": self.object.task.project_id})
 
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        ctx["task"] = self.get_task()
+        return ctx

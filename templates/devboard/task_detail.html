@@ -49,58 +49,44 @@
 {% block content %}
 <div class="mb-4">
     <h1 class="h3 fw-semibold text-primary mb-2">
-        {{ project.name }}
+        {{ task.title }}
     </h1>
 
     <div class="d-flex gap-4 text-muted small mb-3">
-        <span>👤 {{ project.owner }}</span>
-        <span>📅 {{ project.created_at|date:"d.m.Y" }}</span>
+        <span>👤 {{ task.assignee }}</span>
+        <span>📅 {{ task.created_at|date:"d.m.Y" }}</span>
     </div>
 
     <p class="text-muted">
-        {{ project.description|linebreaksbr }}
+        {{ task.description|linebreaksbr }}
     </p>
-
-    <a href="{% url 'devboard:task_create'%}?project={{ project.pk }}" class="btn btn-primary">
-        <i class="bi bi-plus-circle"></i> Dodaj zadanie
-    </a>
 
 </div>
 
 <hr>
 
-<h4 class="mb-4">Lista zadań</h4>
+<h4 class="mb-4">Komentarze</h4>
 
-{% if tasks %}
+<div class="mb-3">
+    <a href="{% url 'devboard:comment_add' task.pk %}" class="btn btn-primary">
+        <i class="bi bi-chat-left-text"></i> Dodaj komentarz
+    </a>
+</div>
+
+{% if comments %}
 <div class="row g-3">
-    {% for task in tasks %}
+    {% for comment in comments %}
     <div class="col-12 col-md-6 col-lg-4">
         <div class="card h-100 border-0 shadow-sm">
             <div class="card-body d-flex flex-column">
 
                 <h5 class="card-title">
-                    {{ task.title }}
+                    {{ comment.author }}
                 </h5>
 
-                <p class="small text-muted mb-2">
-                    {{ task.assignee|default:"-" }} • <span class="task-status status-{{ task.status|lower }}">{{ task.get_status_display }}</span>
-                </p>
-
                 <p class="card-text text-muted">
-                    {{ task.description|linebreaksbr|default:"Brak opisu" }}
+                    {{ comment.body|linebreaksbr|default:"Brak opisu" }}
                 </p>
-
-                <div class="mt-auto pt-3">
-                    <small class="text-muted d-block">
-                        Priorytet: <span class="task-priority priority-{{ task.priority }}">{{ task.get_priority_display }}</span><br>
-                        Termin: {{ task.due_date|date:"d.m.Y" }}
-                    </small>
-                </div>
-
-                <a href="{% url 'devboard:task_detail' task.pk %}"
-                   class="text-decoration-none text-primary">
-                    Komentarze
-                </a>
 
             </div>
         </div>
@@ -109,7 +95,7 @@
 </div>
 {% else %}
 <div class="alert alert-info">
-    Brak zadań w projekcie
+    Brak komentarzy w zadaniu
 </div>
 {% endif %}
 {% endblock %}

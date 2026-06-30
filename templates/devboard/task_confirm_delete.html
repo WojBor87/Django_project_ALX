@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block title %}Usuń zadanie{% endblock %}
+
+{% block content %}
+<div class="mb-4">
+    <h1 class="h3 fw-semibold text-primary mb-2">Usuń zadanie</h1>
+    <p class="text-muted mb-0">Potwierdź usunięcie zadania z projektu.</p>
+</div>
+
+<div class="card border-0 shadow-sm">
+    <div class="card-body p-4">
+        <div class="alert alert-warning d-flex align-items-start gap-3 mb-4">
+            <i class="bi bi-exclamation-triangle-fill fs-4"></i>
+            <div>
+                <div class="fw-semibold">Ta operacja jest nieodwracalna</div>
+                <div class="small">Zadanie <strong>{{ object.title }}</strong> zostanie trwale usunięte.</div>
+            </div>
+        </div>
+
+        <dl class="row mb-0">
+            <dt class="col-sm-3 text-muted">Projekt</dt>
+            <dd class="col-sm-9">{{ object.project.name }}</dd>
+
+            <dt class="col-sm-3 text-muted">Status</dt>
+            <dd class="col-sm-9">{{ object.get_status_display }}</dd>
+
+            <dt class="col-sm-3 text-muted">Priorytet</dt>
+            <dd class="col-sm-9">{{ object.get_priority_display }}</dd>
+        </dl>
+
+        <form method="post" class="d-flex gap-2 mt-4">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">
+                Usuń
+            </button>
+            <a href="{% url 'devboard:project_details' object.project.pk %}" class="btn btn-outline-secondary">
+                Anuluj
+            </a>
+        </form>
+    </div>
+</div>
+{% endblock %}

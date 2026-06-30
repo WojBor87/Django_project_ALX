@@ -2,7 +2,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 from django.db.models import Count
 from django.urls import reverse, reverse_lazy
-from django.views.generic import ListView, DetailView, CreateView, UpdateView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.utils.translation import gettext_lazy as _
 
 from devboard.mixins import OwnerQuerySetMixin
@@ -88,7 +88,13 @@ class TaskUpdateView(LoginRequiredMixin, UpdateView):
     def get_success_url(self):
         return reverse_lazy("devboard:project_details", args=[self.object.project.id])
 
-    # TODO ...
+
+class TaskDeleteView(LoginRequiredMixin, DeleteView):
+    model = Task
+
+    def get_success_url(self):
+        return reverse_lazy("devboard:project_details", args=[self.object.project.id])
+
 
 class TaskDetailView(LoginRequiredMixin, DetailView):
     model = Task

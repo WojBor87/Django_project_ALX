@@ -22,7 +22,7 @@ class TaskForm(forms.ModelForm):
             "description": forms.Textarea(attrs={'class': 'form-control', "rows": "5"}),
             "project": forms.Select(attrs={'class': 'form-select'}),
             "assignee": forms.Select(attrs={'class': 'form-select'}),
-            "due_date": forms.DateInput(attrs={'class': 'form-control', "type": "date"}),
+            "due_date": forms.DateInput(attrs={'class': 'form-control', "type": "date"}, format='%Y-%m-%d'),
             "priority": forms.Select(attrs={'class': 'form-select'}),
             "status": forms.Select(attrs={'class': 'form-select'}),
         }

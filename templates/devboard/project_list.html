@@ -3,10 +3,21 @@
 {% load i18n %}
 
 {% block content %}
-<div class="mb-4">
-    <h1 class="h3 fw-semibold text-primary mb-2">{% trans "Moje projekty" %}</h1>
-    <p class="text-muted">{% trans "Lista przypisanych projektów" %}</p>
+<div class="row mb-5">
+    <div class="col-lg-8">
+        <div class="mb-4">
+            <h1 class="display-5 fw-bold">
+                <i class="bi bi-kanban"></i> Moje projekty
+            </h1>
+            <p class="lead text-muted">Zarządzaj wszystkimi swoimi projektami w jednym miejscu</p>
+            <a href="{% url 'devboard:project-create' %}" class="btn btn-primary">
+                <i class="bi bi-plus-circle"></i> Nowy projekt
+            </a>
+        </div>
+    </div>
+
 </div>
+
 
 {% if projects %}
 <div class="row g-3">
@@ -39,8 +50,39 @@
     {% endfor %}
 </div>
 {% else %}
-<div class="alert alert-info" role="alert">
-    <p class="mb-0">Brak projektów do wyświetlenia</p>
+<div class="alert alert-info alert-dismissible fade show" role="alert">
+    <i class="bi bi-info-circle"></i> <strong>Brak projektów</strong> — Stwórz nowy projekt, aby zacząć!
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 </div>
 {% endif %}
+
+<!-- Modal Nowy projekt -->
+<div class="modal fade" id="newProjectModal" tabindex="-1" aria-labelledby="newProjectLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header border-bottom-0">
+                <h5 class="modal-title" id="newProjectLabel">
+                    <i class="bi bi-plus-circle"></i> Stwórz nowy projekt
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="mb-3">
+                        <label for="projectName" class="form-label">Nazwa projektu</label>
+                        <input type="text" class="form-control" id="projectName" placeholder="Wpisz nazwę projektu">
+                    </div>
+                    <div class="mb-3">
+                        <label for="projectDesc" class="form-label">Opis</label>
+                        <textarea class="form-control" id="projectDesc" rows="3" placeholder="Dodaj opis projektu (opcjonalnie)"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer border-top-0">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Anuluj</button>
+                <button type="button" class="btn btn-primary">Utwórz projekt</button>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

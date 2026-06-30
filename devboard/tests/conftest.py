@@ -26,10 +26,3 @@ def task(project):
         status=Task.Status.TODO,
         priority=Task.Priority.HIGH
     )
-
-@pytest.fixture
-def logged_user():
-    return User.objects.create_user(
-        username='loggeduser',
-        password='testpass123'
-    )

@@ -6,7 +6,7 @@ from django.views.generic import ListView, DetailView, CreateView
 from django.utils.translation import gettext_lazy as _
 
 from devboard.models import Project, Task, Comment
-from devboard.forms import TaskForm, CommentForm
+from devboard.forms import TaskForm, CommentForm, ProjectForm
 
 
 class ProjectListView(LoginRequiredMixin, ListView):
@@ -40,6 +40,18 @@ class ProjectDataView(LoginRequiredMixin, DetailView):
         return ctx
 
 
+class ProjectCreateView(LoginRequiredMixin, CreateView):
+    model = Project
+    template_name = "devboard/project_create.html"
+    form_class = ProjectForm
+    success_url = reverse_lazy("devboard:project_list")
+
+    def form_valid(self, form):
+        form.instance.owner = self.request.user
+        messages.success(self.request, f"Projekt '{form.instance.name}' został utworzony.")
+        return super().form_valid(form)
+
+
 class TaskCreateView(LoginRequiredMixin, CreateView):
     '''
     Mój widok
@@ -66,7 +78,7 @@ class TaskDetailView(LoginRequiredMixin, DetailView):
     context_object_name = 'task'
 
     def get_queryset(self):
-        return Task.objects.filter(assignee=self.request.user)
+        return Task.objects.filter(project__owner=self.request.user)
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)

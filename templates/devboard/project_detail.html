@@ -97,10 +97,11 @@
                     </small>
                 </div>
 
-                <a href="{% url 'devboard:task_detail' task.pk %}"
-                   class="text-decoration-none text-primary">
-                    Komentarze
-                </a>
+                <span class="badge bg-primary-subtle text-primary">
+                    <a href="{% url 'devboard:task_detail' task.pk %}">
+                       Komentarze
+                    </a>
+                </span>
 
             </div>
         </div>

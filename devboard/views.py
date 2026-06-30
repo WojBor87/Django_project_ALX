@@ -5,30 +5,28 @@ from django.urls import reverse, reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView
 from django.utils.translation import gettext_lazy as _
 
+from devboard.mixins import OwnerQuerySetMixin
 from devboard.models import Project, Task, Comment
 from devboard.forms import TaskForm, CommentForm, ProjectForm
 
 
-class ProjectListView(LoginRequiredMixin, ListView):
+class ProjectListView(OwnerQuerySetMixin, ListView):
     model = Project
     template_name = 'devboard/project_list.html'
     context_object_name = 'projects'
 
     def get_queryset(self):
         return (
-            Project.objects.filter(owner=self.request.user)
+            super().get_queryset()
             .annotate(task_count=Count('tasks'))
             .order_by('-task_count')
         )
 
 
-class ProjectDataView(LoginRequiredMixin, DetailView):
+class ProjectDetailView(OwnerQuerySetMixin, DetailView):
     model = Project
     template_name = 'devboard/project_detail.html'
     context_object_name = 'project'
-
-    def get_queryset(self):
-        return Project.objects.filter(owner=self.request.user)
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
@@ -59,8 +57,18 @@ class TaskCreateView(LoginRequiredMixin, CreateView):
     model = Task
     template_name = 'devboard/task_create.html'
     form_class = TaskForm
-    success_url = reverse_lazy("devboard:project_list")
+
+    def get_success_url(self):
+        return reverse_lazy("devboard:project_details", args=[self.object.project.id])
+
     context_object_name = 'task'
+
+    def get_initial(self):
+        initial = super().get_initial()
+        project_id = self.request.GET.get("project")
+        if project_id:
+            initial["project"] = project_id
+        return initial
 
     def get_form(self, form_class=None):
         form = super().get_form(form_class)

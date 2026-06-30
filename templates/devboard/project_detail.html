@@ -103,12 +103,15 @@
 
                 <div class="task-actions d-flex gap-2 mt-3 flex-wrap">
                     <a href="{% url 'devboard:task_detail' task.pk %}" class="btn btn-sm btn-outline-primary">
+                        <i class="bi bi-chat-left-text me-1"></i>
                         Komentarze
                     </a>
                     <a href="{% url 'devboard:task_update' task.pk %}" class="btn btn-sm btn-primary">
+                        <i class="bi bi-pencil-square me-1"></i>
                         Edytuj
                     </a>
                     <a href="{% url 'devboard:task_delete' task.pk %}" class="btn btn-sm btn-warning">
+                        <i class="bi bi-trash me-1"></i>
                         Usuń
                     </a>
                 </div>

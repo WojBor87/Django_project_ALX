@@ -80,17 +80,19 @@ class TaskCreateView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
 
-class TaskUpdateView(LoginRequiredMixin, UpdateView):
+class TaskUpdateView(OwnerQuerySetMixin, UpdateView):
     model = Task
     template_name = 'devboard/task_create.html'
     form_class = TaskForm
+    owner_field = "project__owner"
 
     def get_success_url(self):
         return reverse_lazy("devboard:project_details", args=[self.object.project.id])
 
 
-class TaskDeleteView(LoginRequiredMixin, DeleteView):
+class TaskDeleteView(OwnerQuerySetMixin, DeleteView):
     model = Task
+    owner_field = "project__owner"
 
     def get_success_url(self):
         return reverse_lazy("devboard:project_details", args=[self.object.project.id])

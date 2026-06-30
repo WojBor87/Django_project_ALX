@@ -2,7 +2,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 from django.db.models import Count
 from django.urls import reverse, reverse_lazy
-from django.views.generic import ListView, DetailView, CreateView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView
 from django.utils.translation import gettext_lazy as _
 
 from devboard.mixins import OwnerQuerySetMixin
@@ -79,6 +79,16 @@ class TaskCreateView(LoginRequiredMixin, CreateView):
         messages.success(self.request, _(f"Zadanie '{form.instance.title}' zostalo dodane"))
         return super().form_valid(form)
 
+
+class TaskUpdateView(LoginRequiredMixin, UpdateView):
+    model = Task
+    template_name = 'devboard/task_create.html'
+    form_class = TaskForm
+
+    def get_success_url(self):
+        return reverse_lazy("devboard:project_details", args=[self.object.project.id])
+
+    # TODO ...
 
 class TaskDetailView(LoginRequiredMixin, DetailView):
     model = Task

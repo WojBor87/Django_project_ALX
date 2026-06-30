@@ -29,6 +29,10 @@
         font-weight: 600;
     }
 
+    .task-actions a {
+        min-width: 110px;
+    }
+
     .priority-1 {
         background: #dcfce7;
         color: #166534;
@@ -97,11 +101,14 @@
                     </small>
                 </div>
 
-                <span class="badge bg-primary-subtle text-primary">
-                    <a href="{% url 'devboard:task_detail' task.pk %}">
-                       Komentarze
+                <div class="task-actions d-flex gap-2 mt-3 flex-wrap">
+                    <a href="{% url 'devboard:task_detail' task.pk %}" class="btn btn-sm btn-outline-primary">
+                        Komentarze
                     </a>
-                </span>
+                    <a href="{% url 'devboard:task_update' task.pk %}" class="btn btn-sm btn-primary">
+                        Edytuj
+                    </a>
+                </div>
 
             </div>
         </div>

@@ -61,7 +61,7 @@ class TaskCreateView(LoginRequiredMixin, CreateView):
     form_class = TaskForm
 
     def get_success_url(self):
-        return reverse(Task.project.get_absolute_url)
+        return self.object.project.get_absolute_url()
 
     context_object_name = 'task'
 
@@ -89,7 +89,7 @@ class TaskUpdateView(OwnerQuerySetMixin, UpdateView):
     owner_field = "project__owner"
 
     def get_success_url(self):
-        return reverse(Task.project.get_absolute_url)
+        return self.object.project.get_absolute_url()
 
 
 class TaskDeleteView(OwnerQuerySetMixin, DeleteView):
@@ -97,7 +97,7 @@ class TaskDeleteView(OwnerQuerySetMixin, DeleteView):
     owner_field = "project__owner"
 
     def get_success_url(self):
-        return reverse(Task.project.get_absolute_url)
+        return self.object.project.get_absolute_url()
 
 
 class TaskStatusView(LoginRequiredMixin, View):
@@ -117,7 +117,7 @@ class TaskStatusView(LoginRequiredMixin, View):
         task.save()
 
         messages.success(request, "Status zaktualizowany")
-        return redirect(task.project.get_absolute_url)
+        return redirect(task.project)
 
 
 class TaskDetailView(LoginRequiredMixin, DetailView):
@@ -189,7 +189,7 @@ class AddNewCommentToTask(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
     def get_success_url(self):
-        return reverse(Task.project.get_absolute_url)
+        return reverse("devboard:project_details", kwargs={"pk": self.object.task.project_id})
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)

@@ -8,3 +8,4 @@ class DevboardConfig(AppConfig):
 
     def ready(self):
         print('devboard ready!')
+        from devboard import signals # noqa: F401

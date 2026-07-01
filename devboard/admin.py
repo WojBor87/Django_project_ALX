@@ -1,5 +1,6 @@
 from django.contrib import admin
-from django.utils.html import format_html
+
+from devboard.badges import render_status_badge
 
 from .models import Project, Task, Comment
 
@@ -34,7 +35,7 @@ class ProjectAdmin(admin.ModelAdmin):
 class TaskAdmin(admin.ModelAdmin):
     list_display = (
         "title", "project", "priority",
-        "assignee", "due_date","status_badge"
+        "assignee", "due_date","status_badge_admin"
     )
     list_filter = ("status", "priority", "project", "assignee")
     search_fields = ("title", "description")
@@ -48,18 +49,8 @@ class TaskAdmin(admin.ModelAdmin):
     )
 
     @admin.display(description="Status")
-    def status_badge(self, obj):
-        colors = {
-            "TODO": "#6c757d",
-            "IN_PROGRESS": "#0d6efd",
-            "DONE": "#198754",
-        }
-        color = colors.get(obj.status, "#000")
-        return format_html(
-            '<span style="background:{};color:white;padding:2px 8px;border-radius:4px">{}</span>',
-            color, obj.get_status_display(),
-        )
-
+    def status_badge_admin(self, obj):
+        return render_status_badge(obj)
 
 admin.site.site_header = "DevBoard — Panel Administracyjny"
 admin.site.site_title = "DevBoard Admin"

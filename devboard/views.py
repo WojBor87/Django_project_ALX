@@ -1,6 +1,6 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
-from django.db.models import Count
+from django.db.models import Count, Q
 from django.urls import reverse, reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.utils.translation import gettext_lazy as _
@@ -113,6 +113,32 @@ class TaskDetailView(LoginRequiredMixin, DetailView):
             .select_related('task')
             .order_by('-created_at', 'author')
         )
+        return ctx
+
+
+class TaskSearchView(LoginRequiredMixin, ListView):
+    model = Task
+    template_name = "devboard/task_search.html"
+    context_object_name = "tasks"
+
+    def get_queryset(self):
+        query = self.request.GET.get("q", "")
+
+        queryset = Task.objects.filter(
+            project__owner=self.request.user
+        )
+
+        if query:
+            queryset = queryset.filter(
+                Q(title__icontains=query) |
+                Q(description__icontains=query)
+            )
+
+        return queryset.select_related("project", "assignee")
+
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        ctx["query"] = self.request.GET.get("q", "")
         return ctx
 
 

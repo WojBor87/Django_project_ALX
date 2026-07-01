@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+{% block title %}Wyszukiwanie zadań{% endblock %}
+
+{% block content %}
+<div class="mb-4">
+    <h1 class="h3 fw-semibold text-primary mb-2">Wyniki wyszukiwania</h1>
+    <p class="text-muted mb-0">
+        Przeszukuj tytuły i opisy zadań w swoich projektach.
+    </p>
+</div>
+
+<form method="get" action="{% url 'devboard:search' %}" class="card border-0 shadow-sm p-3 p-lg-4 mb-4">
+    <div class="row g-3 align-items-end">
+        <div class="col-12 col-lg-9">
+            <label for="search-query" class="form-label fw-semibold">Słowo kluczowe</label>
+            <input
+                id="search-query"
+                type="text"
+                name="q"
+                value="{{ query }}"
+                placeholder="Wpisz frazę do wyszukania"
+                class="form-control form-control-lg"
+                autocomplete="off"
+                autofocus
+            >
+        </div>
+        <div class="col-12 col-lg-3 d-grid">
+            <button type="submit" class="btn btn-primary btn-lg">Szukaj</button>
+        </div>
+    </div>
+</form>
+
+{% if query %}
+    <div class="mb-3">
+        <span class="badge bg-primary-subtle text-primary px-3 py-2">
+            Wyniki dla: "{{ query }}"
+        </span>
+    </div>
+{% endif %}
+
+{% if tasks %}
+    <div class="row g-3">
+        {% for task in tasks %}
+            <div class="col-12 col-md-6 col-xl-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body d-flex flex-column gap-3">
+                        <div>
+                            <h5 class="card-title mb-1">
+                                <a href="{% url 'devboard:task_detail' task.pk %}" class="text-decoration-none text-primary">
+                                    {{ task.title }}
+                                </a>
+                            </h5>
+                            <p class="text-muted mb-0">
+                                Projekt: {{ task.project.name }}
+                                {% if task.assignee %} • {{ task.assignee }}{% endif %}
+                            </p>
+                        </div>
+
+                        <p class="card-text text-muted mb-0">
+                            {{ task.description|truncatewords:22|default:"Brak opisu" }}
+                        </p>
+
+                        <div class="mt-auto d-flex flex-wrap gap-2">
+                            <span class="badge bg-primary-subtle text-primary">
+                                {{ task.get_status_display }}
+                            </span>
+                            <span class="badge bg-secondary-subtle text-secondary">
+                                {{ task.get_priority_display }}
+                            </span>
+                            {% if task.due_date %}
+                                <span class="badge bg-light text-muted border">
+                                    {{ task.due_date|date:"d.m.Y" }}
+                                </span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% elif query %}
+    <div class="alert alert-info mb-0">
+        Brak wyników dla tej frazy.
+    </div>
+{% else %}
+    <div class="alert alert-secondary mb-0">
+        Wpisz frazę, aby rozpocząć wyszukiwanie.
+    </div>
+{% endif %}
+{% endblock %}

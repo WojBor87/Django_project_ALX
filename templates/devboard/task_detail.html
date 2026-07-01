@@ -90,35 +90,10 @@
     </p>
 
     <p class="small text-muted mb-2">
-        <span class="task-priority priority-{{ task.priority|lower }}">{{ task.get_priority_display }}</span> • {{ task | status_badge  }}
+        <span class="task-priority priority-{{ task.priority|lower }}">{{ task.get_priority_display }}</span> • {{ task|status_badge  }}
     </p>
-    <div class="task-actions d-flex gap-2 mt-3 flex-wrap align-items-center">
 
-        {% if task.status != "DONE" %}
-        <form method="post"
-              action="{% url 'devboard:task_status' task.pk %}"
-              class="m-0">
-            {% csrf_token %}
-            <input type="hidden" name="status" value="DONE">
-            <button type="submit" class="btn btn-success btn-sm">
-                <i class="bi bi-check-circle me-1"></i>
-                Oznacz jako Wykonane
-            </button>
-        </form>
-        {% endif %}
-
-        <a href="{% url 'devboard:task_update' task.pk %}" class="btn btn-sm btn-primary">
-            <i class="bi bi-pencil-square me-1"></i>
-            Edytuj
-        </a>
-
-        <a href="{% url 'devboard:task_delete' task.pk %}" class="btn btn-sm btn-warning">
-            <i class="bi bi-trash me-1"></i>
-            Usuń
-        </a>
-
-    </div>
-
+    {% include "devboard/_task_actions_buttons.html" %}
 
 </div>
 

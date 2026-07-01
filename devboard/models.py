@@ -103,6 +103,8 @@ class Task(models.Model):
             return self.due_date < timezone.now().date()
         return False
 
+    def get_absolute_url(self) -> str:
+        return reverse("devboard:task_detail", args=[self.pk])
 
 class Comment(models.Model):
     task = models.ForeignKey(

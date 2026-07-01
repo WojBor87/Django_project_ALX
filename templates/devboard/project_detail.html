@@ -98,7 +98,7 @@
                 </p>
 
                 <p class="card-text text-muted">
-                    {{ task.description|linebreaksbr|default:"Brak opisu" }}
+                    {{ task.description|linebreaksbr|default:"Brak opisu"|truncatechars:50 }}
                 </p>
 
                 <div class="mt-auto pt-3">

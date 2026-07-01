@@ -125,8 +125,8 @@ class TaskDetailView(LoginRequiredMixin, DetailView):
     template_name = 'devboard/task_detail.html'
     context_object_name = 'task'
 
-    def get_queryset(self):
-        return Task.objects.filter(project__owner=self.request.user)
+    # def get_queryset(self):
+    #     return Task.objects.filter(project__owner=self.request.user)
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
@@ -189,7 +189,7 @@ class AddNewCommentToTask(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
     def get_success_url(self):
-        return reverse("devboard:project_details", kwargs={"pk": self.object.task.project_id})
+        return self.object.task.get_absolute_url()
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)

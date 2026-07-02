@@ -28,5 +28,5 @@ class TestTaskCreateView:
 
         # Check if the task was created successfully
         assert response.status_code == 302  # Redirect after successful creation
-        assert response.url == reverse('devboard:project_list')
+        assert response.url == project.get_absolute_url()
         assert Task.objects.count() == 1

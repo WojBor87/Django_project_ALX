@@ -7,8 +7,8 @@ import os
 env_path = Path(__file__).resolve().parent.parent.parent / '.env'
 load_dotenv(env_path)
 
-SECRET_KEY = "^52vdq+*6n#ygj&ip&1a5m24l4hodn@5f*8gcl7+4r*8f!-^f=-b^ev8ti_f5-xz=le3$i&aqa(tbz&xdfa52_vl0nyu9-mng09s"
-DEBUG = False
+SECRET_KEY = "^52vdq+*6n#ygj&ip&1a5m24l4hodn@5f*8gcl7+4r"
+DEBUG = True
 
 ALLOWED_HOSTS = []
 
@@ -30,3 +30,9 @@ else:
             'NAME': BASE_DIR / 'db.sqlite3',
         }
     }
+
+CELERY_BROKER_URL = "redis://localhost:6379/0"
+CELERY_RESULT_BACKEND = "redis://localhost:6379/1"
+
+CELERY_TASK_ALWAYS_EAGER = True
+CELERY_TASK_EAGER_PROPAGATES = True

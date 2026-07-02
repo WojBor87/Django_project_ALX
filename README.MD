@@ -85,9 +85,9 @@ python -m venv .venv
 python -m pip install -r requirements.txt
 ```
 
-### 3. Przygotuj plik `.env_test`
+### 3. Przygotuj plik `.env`
 
-Ustawienia lokalne (`config/settings/dev.py`) ładują zmienne z pliku `.env_test`.
+Ustawienia lokalne (`config/settings/dev.py`) ładują zmienne z pliku `.env`.
 
 Minimalny przykład:
 

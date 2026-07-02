@@ -150,12 +150,14 @@ class TaskSearchView(LoginRequiredMixin, ListView):
             project__owner=self.request.user
         )
 
-        # TODO: Dodać wyszukiwanie po kilku słowach rozdzielonych znakiem białym
         if query:
-            queryset = queryset.filter(
-                Q(title__icontains=query) |
-                Q(description__icontains=query)
-            )
+            words = query.split()
+
+            for word in words:
+                queryset = queryset.filter(
+                    Q(title__icontains=word) |
+                    Q(description__icontains=word)
+                )
 
         return queryset.select_related("project", "assignee")
 

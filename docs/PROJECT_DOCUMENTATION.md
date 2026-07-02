@@ -239,7 +239,7 @@ python -m pip install -r requirements.txt
 
 ### 3. Przygotowanie zmiennych środowiskowych
 
-Ustawienia `dev.py` ładują plik `.env_test`. Plik powinien zawierać co najmniej:
+Ustawienia `dev.py` ładują plik `.env`. Plik powinien zawierać co najmniej:
 
 ```env
 SECRET_KEY=dev-secret-key
